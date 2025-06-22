@@ -1,7 +1,12 @@
 pipeline {
-agent {
-	docker { image 'node:16-alpine' }
-}
+// agent {
+//	docker { image 'node:16-alpine' }
+// }
+ agent any
+
+ triggers {
+     pollSCM('H/5 * * * *')  // Every 5 minutes
+ }
 
    stages {
 
