@@ -2,7 +2,7 @@ pipeline {
 // agent {
 //	docker { image 'node:16-alpine' }
 // }
- agent any
+ agent vspherevmagent
 
  triggers {
      pollSCM('H/5 * * * *')  // Every 5 minutes
