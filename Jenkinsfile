@@ -2,10 +2,10 @@ pipeline {
 // agent {
 //	docker { image 'node:16-alpine' }
 // }
- agent vspherevmagent
+ agent { label 'agent1' }
 
  triggers {
-     pollSCM('H/5 * * * *')  // Every 5 minutes
+     pollSCM('H/1 * * * *')  // Every 5 minutes
  }
 	
    stages {
