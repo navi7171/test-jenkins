@@ -54,6 +54,12 @@ pipeline {
          sh 'echo dast scan for security'
         }
     }
+
+    stage('Deploy to OpenShift') {
+      steps  {
+         sh 'python openshift-deploy.py'
+        }
+    }
  }
 
 
