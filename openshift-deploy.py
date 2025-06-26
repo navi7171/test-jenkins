@@ -1,7 +1,11 @@
 from kubernetes import client, config
+from kubernetes.client.rest import ApiException
 
 # Load kube config
 config.load_kube_config()
+v1 = client.CoreV1Api()
+namespace = "main"
+pod_name = "demo-pod"
 
 # Delete existing pod if it exists
 try:
@@ -33,8 +37,6 @@ pod_manifest = {
 }
 
 # Create pod
-v1 = client.CoreV1Api()
-namespace = "main"  # Change to your OpenShift namespace/project
 
 resp = v1.create_namespaced_pod(body=pod_manifest, namespace=namespace)
 print(f"Pod '{resp.metadata.name}' created in namespace '{namespace}'")
