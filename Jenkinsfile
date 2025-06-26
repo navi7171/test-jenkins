@@ -4,6 +4,13 @@ pipeline {
 // }
  agent { label 'agent1' }
 
+ environment {
+    OPENSHIFT_API = 'https://api.r2wid4.ibm.aessatl.arrow.com:6443'
+    NAMESPACE = 'main'
+    SHELL_SCRIPT_PATH = 'packages.sh'
+    PY_SCRIPT_PATH = 'openshift-deploy.py'
+  }
+ 
  triggers {
      pollSCM('H/1 * * * *')  // Every 5 minutes
  }
@@ -55,10 +62,24 @@ pipeline {
         }
     }
 
+    stage('Login to OpenShift') {
+      steps  {
+         withCredentials([string(credentialsId: 'ocp-token', variable: 'OCP_TOKEN')]) {
+          sh """
+            oc login ${OPENSHIFT_API} --token=${OCP_TOKEN} --insecure-skip-tls-verify=true
+            oc project ${NAMESPACE}
+          """
+        }
+    }
+
     stage('Deploy to OpenShift') {
       steps  {
-         sh 'python openshift-deploy.py'
-        }
+	 sh """
+	      chmod +x ${SHELL_SCRIPT_PATH}
+	      ${SHELL_SCRIPT_PATH}
+              python ${PY_SCRIPT_PATH}
+	 """
+      }
     }
  }
 
