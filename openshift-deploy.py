@@ -3,6 +3,19 @@ from kubernetes import client, config
 # Load kube config
 config.load_kube_config()
 
+# Delete existing pod if it exists
+try:
+    v1.delete_namespaced_pod(name=pod_name, namespace=namespace)
+    print(f"Deleted existing pod: {pod_name}")
+    # Wait for deletion to complete
+    import time
+    time.sleep(2)
+except ApiException as e:
+    if e.status == 404:
+        print("Pod does not exist, creating new one.")
+    else:
+        raise
+
 # Define pod spec
 pod_manifest = {
     "apiVersion": "v1",
