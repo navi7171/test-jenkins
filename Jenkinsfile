@@ -74,11 +74,11 @@ pipeline {
 
     stage('Deploy to OpenShift') {
       steps  {
-	 sh """
-	      chmod +x ${SHELL_SCRIPT_PATH}
-	      ${SHELL_SCRIPT_PATH}
-              python ${PY_SCRIPT_PATH}
-	 """
+	    sh """
+	        chmod +x ${SHELL_SCRIPT_PATH}
+	        ${SHELL_SCRIPT_PATH}
+            python ${PY_SCRIPT_PATH}
+	    """
       }
     }
  }
